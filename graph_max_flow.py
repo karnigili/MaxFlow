@@ -26,32 +26,31 @@ class Graph (object):
         self.seen = [0] * self.size
 
 
-        assert sum(self.capacity[-1]) == 0 and sum(self.capacity[:,0]) == 0 , \
-        "source must be first, sink must be last"
+        assert sum(self.capacity[-1]) == 0 and sum(self.capacity[:, 0]) \
+        == 0 , "source must be first, sink must be last"
 
-        self.source = 0 
+        self.source = 0
         self.sink = self.size - 1
 
-    def _search (self, traverse, origin = None, goal = None, DFS = False):
+    def _search(self, traverse, origin=None, goal=None, DFS=False):
         '''
-        objective : find an augmented path between given origin and goal. 
+        objective : find an augmented path between given origin and goal.
         uses DFS or BFS
 
         parameters :
             self - object
-            traverse - a 1D array, holds the traverse of the path, 
+            traverse - a 1D array, holds the traverse of the path,
                 traverse[successor] = current
             origin - int, an index for the origin, the default is the source
             goal - int, an index for the goal, the default is sink
-            DFS - bool, True will search depth-first and False will 
-                search breadth-first. 
+            DFS - bool, True will search depth-first and False will
+                search breadth-first.
             the default is BFS
 
         output
             True or False; indicator whether a path exists
 
         '''
-
 
         # set path origin and goal indexes
         goal = goal or self.sink
@@ -74,7 +73,8 @@ class Graph (object):
             # pops the next index to visit, base of the search method chosen
             if DFS:
                 current = to_visit.pop(0)
-            else:  #BFS
+            # BFS
+            else:  
                 current = to_visit.pop()
 
             # iterates on all possible steps
@@ -95,8 +95,8 @@ class Graph (object):
 
         return visited[goal]
 
-    def _max_flow_search_FF (self, origin = None, goal = None, data = False,\
-     DFS = False):
+    def _max_flow_search_FF(self, origin=None, goal=None, data=False,\
+     DFS=False):
         '''
         objective : finds the max flow for a given graph
 
@@ -130,7 +130,7 @@ class Graph (object):
         path_flow = float('inf')
 
         # before augmented path were exhusted 
-        while self._search (traverse, origin, goal, DFS):
+        while self._search(traverse, origin, goal, DFS):
 
             iter_count += 1
             presented_data[iter_count] = []
@@ -175,7 +175,7 @@ class Graph (object):
             for i  in range(1, iter_count+1)]}
         return max_flow
 
-    def EdmondKarp (self, origin = None, goal = None, data = False):
+    def EdmondKarp(self, origin=None, goal=None, data=False):
         '''
         objective : an external func, uses _max_flow_search with BFS 
             Finds the shortest augmenting path from s to t, using BFS.
@@ -202,10 +202,10 @@ class Graph (object):
             hence O(V). The total complexity, therefore, O(VE^2)
             
         '''
-        return self._max_flow_search_FF(origin = origin, goal = goal, \
-            data = data, DFS = False)
+        return self._max_flow_search_FF(origin=origin, goal=goal, \
+            data=data, DFS=False)
 
-    def _BFS_using_levels (self, origin = None, goal = None):
+    def _BFS_using_levels(self, origin=None, goal=None):
         '''
         objective : bfs using the vertex level
 
@@ -241,7 +241,7 @@ class Graph (object):
 
         return self.level
 
-    def _send_flow (self, origin = None, goal = None, max_flow = float('inf')):
+    def _send_flow(self, origin=None, goal=None, max_flow=float('inf')):
         '''
         objective : find the max flow based on DFS
 
@@ -285,7 +285,7 @@ class Graph (object):
                     return path_flow
         return 0
 
-    def _max_flow_search_D (self, origin = None, goal = None):
+    def _max_flow_search_D(self, origin=None, goal=None):
         '''
         objective : iteration on the augmented paths 
 
@@ -322,7 +322,7 @@ class Graph (object):
                 # incrementing flow
                 total_flow += path_flow
 
-    def Dinic (self, origin = None, goal = None):
+    def Dinic(self, origin=None, goal=None):
         '''
         objective: creates the next path using BFS, marks vertexes 
             based on their distance from s. choosing only edges (u,v) 
@@ -357,9 +357,9 @@ class Graph (object):
 
         '''
 
-        return self._max_flow_search_D(origin = origin, goal = goal)
+        return self._max_flow_search_D(origin=origin, goal=goal)
 
-    def _push (self, u, v):
+    def _push(self, u, v):
         '''
         objective: pushes the excess to a viable next vertex
 
@@ -373,7 +373,7 @@ class Graph (object):
 
         '''
         # caculates the viable transferable flow, residual or the full excess
-        delta_flow = min (self.excess[u], (self.capacity[(u, v)] - \
+        delta_flow = min(self.excess[u], (self.capacity[(u, v)] - \
             self.flow[(u, v)]))
 
         # modify the flow and excess in both vertexes, and edges, 
@@ -384,7 +384,7 @@ class Graph (object):
         self.excess[u] -= delta_flow
         self.excess[v] += delta_flow
 
-    def _relabel (self, u):
+    def _relabel(self, u):
         '''
         objective : modifies a vertex distnce to enable push 
             (to create d(u) < d(v))
@@ -407,7 +407,7 @@ class Graph (object):
                 min_distance = min(min_distance, self.distance[v])
                 self.distance[u] = min_distance + 1
 
-    def _discharge (self, u):
+    def _discharge(self, u):
         '''
         objective: iterating on an active vertex with an excess until resolved
 
@@ -444,7 +444,7 @@ class Graph (object):
                 self._relabel(u)
                 self.seen[u] = 0
 
-    def PushRelable (self, origin = None, goal = None):
+    def PushRelable(self, origin=None, goal=None):
 
         '''
         objective: unlike the previous two, this algorithm optimizes 
@@ -513,43 +513,4 @@ class Graph (object):
                 potential_vertex += 1
 
         return sum (self.flow[origin])
-
-        
-
-     
-
-
-
-################################
-### example ###
-invalid_data = np.array([[0, 10, 0, 8, 0, 0],
-                [1, 0, 5, 2, 0, 0],
-                [0, 0, 0, 0, 0, 7],
-                [0, 0, 0, 0, 10, 0],
-                [0, 0, 8, 0, 0, 10],
-                [0, 0, 0, 0, 0, 0]])
-
-# invalid_attempt = Graph(invalid_data)
-
-valid_data = np.array([[0, 10, 0, 8, 0, 0],
-                [0, 0, 5, 2, 0, 0],
-                [0, 0, 0, 0, 0, 7],
-                [0, 0, 0, 0, 10, 0],
-                [0, 0, 8, 0, 0, 10],
-                [0, 0, 0, 0, 0, 0]])
-
-EdmondKarp_graph = Graph(valid_data)
-Dinic_graph = Graph(valid_data)
-PushRelable_graph = Graph(valid_data)
-
-print "Max flow for the given valid graph."
-
-print "\nmax flow using Edmond Karp :"
-print EdmondKarp_graph.EdmondKarp()
-print "\nmax flow using Dinic :"
-print Dinic_graph.Dinic()
-print "\nmax flow using Push Relable :"
-print PushRelable_graph.PushRelable()
-
-
 

@@ -16,7 +16,7 @@ setup(
     description='A max flow implemetation',
     long_description=long_description,
 
-    url='https://github.com/pypa/###############################',
+    url='https://github.com/karnigili/MaxFlow',
 
     author='Gili Karni',
     author_email='gili.karni@minerva.kgi.edu',
