@@ -1,6 +1,6 @@
 ### example ###
 
-from graph_max_flow import *
+from MaxFlow import *
 
 invalid_data = np.array([[0, 10, 0, 8, 0, 0],
                 [1, 0, 5, 2, 0, 0],
