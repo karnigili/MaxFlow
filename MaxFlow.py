@@ -196,10 +196,13 @@ class Graph (object):
         
         complexity 
             O(VE^2)
-            A single BFS takes O(E), the push of flow on this augmented path 
-            (with at least one edge), hence O(E).
-            This process can be repeated bounded by the number of vertexes, 
-            hence O(V). The total complexity, therefore, O(VE^2)
+            This algorithm uses a BFS to fins in each iteration the shortest 
+            augmented path between the source and the sink. Each path contains 
+            at least one edge. A single BFS runs O(E) and a push along the 
+            path is in its worst case O(E). Since the length of th paths 
+            never decreases (as promised by the use of BFS) and the length 
+            of a path can never exceed V, each edge can be found V times.
+            The total complexity, therefore, O(VE^2)
             
         '''
         return self._max_flow_search_FF(origin=origin, goal=goal, \
@@ -466,13 +469,14 @@ class Graph (object):
 
         complexity 
             O(V^3)
-            Each vertex can be relabeled 2V times; saturating pushes 
-            (uses the full residual capacity) 
-            And a nonsaturating pushes. There is a max of V saturating pushes 
+            Each vertex can be relabeled 2V times; discahrging pushes 
+            (uses the full residual capacity) And a nonsaturating pushes. 
+            There is a max of V saturating pushes 
             can be done on any edge. Hence max of 2V saturating pushes. 
             Pushes for an edge and its linked edge (numbered E) are O(VE). 
             There are O(V^2) relabling operation called on V vertexes - O(V^3). 
-            Adding these O(V^3+VE) = O(V^3) 
+            Adding these O(V^3+VE) = O(V^3). 
+            (Since V<=E<=V^2 this conclusion is viable)
         '''
         # initiates vars
         n = self.size
