@@ -20,7 +20,7 @@ A use of breadth-first search reduces the dependency on the value of the flow an
   
    Each path contains at least one edge. A single BFS runs O(E), and push along the path is in its worst case O(E). Since the length of the paths never decreases (as promised by the use of BFS) and the length of a path can never exceed V, each edge can be found V times. Leading to an overall worse case running O(VE^2). 
      
-[Edmonds-Karp's illustration](https://github.com/karnigili/MaxFlow/blob/master/illustrations/EdmondKarp.png)
+![picture](https://github.com/karnigili/MaxFlow/blob/master/illustrations/EdmondKarp.png)
 
 ### Dinic's
   The algorithm uses BFS to mark the nodes' distance from the source. Progress in a path can be made only in edges (u,v) where the distance to the source [u-s] is smaller than the distance [v-s] (each distance is bounded by the distance from the source s to the sink t). These distances reduce the number of edges in the graph. Each iteration finds x paths with a uniform distance to the source and using a single DFS to calculate the bounding flow for these paths. Similarly, the calculated flow is sent back, and the process repeats. Once all possible edges where used in a given vertex (meaning, it can not reach the sink anymore), it is being marked as dead as is taken off the residual network. The loop stops when the residual network is exhausted. 
@@ -28,7 +28,7 @@ A use of breadth-first search reduces the dependency on the value of the flow an
 
   The longest path possible from the source to the sink is V, so the number of iterations is bounded by O(V). Each iteration, as stated above, computes the flow using a single DFS (O(E)), then sends the relevant flow back and marks the exhausted vertices (bound by the number of vertices O(V)). Resulting in an inner complexity of O(VE) leading to a total complexity of O(EV^2).  
 
-[Dinic's illustration](https://github.com/karnigili/MaxFlow/blob/master/illustrations/Dinic.png)
+![picture](https://github.com/karnigili/MaxFlow/blob/master/illustrations/Dinic.png)
 
 ### Push Relabel
   This algorithm optimizes using local push of excess flow of each vertex from source to the edges in the graph. Using two main operations; push and relabel. (1) Push: moving flow from u to v bounded by the residual capacity of the edge (u,v). A push is applicable only is the residual is positive, and the distance [u-s] is less than [v-s]. (2) A relabel operation ensures a continuation of these conditions. Initially, the source sends its flow, possibility creating excess flow in its neighbors; if the excess flow is not pushable, a relabeling occurs, and the process repeats until the vertex's flow is within capacity. The relabeling process can move a vertex's distance only one unit above its neighbors at each iteration. The algorithm keeps track on active nodes (with the excess flow) by keep pushing them to the front of the queue.  
@@ -36,7 +36,7 @@ A use of breadth-first search reduces the dependency on the value of the flow an
   The amount of discharging pushes that is being performed is at most 2VE, due to the existential relabel between a discharging push to a new non-discharging push. The probability of each vertex to appear again in the discharging queue before discharging to be V^2, running for each vertex, leads to V^3 non-discharging pushes. Using the lemma saying that V<=E<=V^2, the conclusion of the total complexity O(V^3+VE) is equal to O(V^3).  
 
 
-[PushRelabel illustration](https://github.com/karnigili/MaxFlow/blob/master/illustrations/PushRelabel.png)
+![picture](https://github.com/karnigili/MaxFlow/blob/master/illustrations/PushRelabel.png)
 
 Inspired by 
 
