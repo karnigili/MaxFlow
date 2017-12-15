@@ -470,9 +470,9 @@ class Graph (object):
         complexity 
             O(V^3)
             Each vertex can be relabeled 2V times; discahrging pushes 
-            (uses the full residual capacity) And a nonsaturating pushes. 
-            There is a max of V saturating pushes 
-            can be done on any edge. Hence max of 2V saturating pushes. 
+            (uses the full residual capacity) And a discahrging pushes. 
+            There is a max of V discahrging pushes 
+            can be done on any edge. Hence max of 2V discahrging pushes. 
             Pushes for an edge and its linked edge (numbered E) are O(VE). 
             There are O(V^2) relabling operation called on V vertexes - O(V^3). 
             Adding these O(V^3+VE) = O(V^3). 
